@@ -6,7 +6,7 @@
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/18 17:35:20 by sbos          #+#    #+#                 */
-/*   Updated: 2021/11/30 14:44:49 by sbos          ########   odam.nl         */
+/*   Updated: 2021/11/30 14:55:14 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <stdlib.h> // malloc
 
-t_buffer_list	*gnl_lst_new_back(t_buffer_list **lst)
+static t_buffer_list	*gnl_lst_new(void)
 {
 	t_buffer_list	*new;
 
@@ -23,6 +23,14 @@ t_buffer_list	*gnl_lst_new_back(t_buffer_list **lst)
 		return (NULL);
 	new->start = 0;
 	new->next = NULL;
+	return (new);
+}
+
+t_buffer_list	*gnl_lst_new_back(t_buffer_list **lst)
+{
+	t_buffer_list	*new;
+
+	new = gnl_lst_new();
 	if (*lst == NULL)
 		*lst = new;
 	else
