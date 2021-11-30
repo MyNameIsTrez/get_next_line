@@ -6,7 +6,7 @@
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/18 17:35:17 by sbos          #+#    #+#                 */
-/*   Updated: 2021/11/30 14:44:49 by sbos          ########   odam.nl         */
+/*   Updated: 2021/11/30 14:46:53 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h> // read
 #include <stdlib.h> // malloc
 
-static char	*gnl_create_line_str(t_buffer_list *lst)
+static char	*gnl_malloc_line(t_buffer_list *lst)
 {
 	size_t	len;
 	char	*line;
@@ -50,7 +50,7 @@ static char	*gnl_join_buffers(t_buffer_list **lst)
 	ssize_t			i;
 	ssize_t			j;
 
-	line = gnl_create_line_str(*lst);
+	line = gnl_malloc_line(*lst);
 	if (line == NULL)
 		return (NULL);
 	i = 0;
