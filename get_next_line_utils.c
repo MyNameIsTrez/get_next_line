@@ -6,7 +6,7 @@
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/18 17:35:20 by sbos          #+#    #+#                 */
-/*   Updated: 2021/11/30 14:55:14 by sbos          ########   odam.nl         */
+/*   Updated: 2021/11/30 14:56:39 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_buffer_list	*gnl_lst_new_back(t_buffer_list **lst)
 	t_buffer_list	*new;
 
 	new = gnl_lst_new();
+	if (new == NULL)
+		return (NULL);
 	if (*lst == NULL)
 		*lst = new;
 	else
