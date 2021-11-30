@@ -6,38 +6,13 @@
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/18 17:35:20 by sbos          #+#    #+#                 */
-/*   Updated: 2021/11/29 17:24:45 by sbos          ########   odam.nl         */
+/*   Updated: 2021/11/30 14:44:49 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-// #include <unistd.h> // read
-// #include <sys/types.h> // ssize_t
 #include <stdlib.h> // malloc
-
-void	gnl_next(t_buffer_list **buf)
-{
-	t_buffer_list	*next;
-
-	next = (*buf)->next;
-	free(*buf);
-	*buf = next;
-}
-
-char	*gnl_find_newline(t_buffer_list *buf)
-{
-	ssize_t	i;
-
-	i = buf->start;
-	while (i < buf->size)
-	{
-		if (buf->str[i] == '\n')
-			return (&buf->str[i]);
-		i++;
-	}
-	return (NULL);
-}
 
 t_buffer_list	*gnl_lst_new_back(t_buffer_list **lst)
 {
@@ -59,15 +34,38 @@ t_buffer_list	*gnl_lst_new_back(t_buffer_list **lst)
 	return (new);
 }
 
-char	*gnl_lst_clear(t_buffer_list *buf)
+void	gnl_next(t_buffer_list **lst)
 {
 	t_buffer_list	*next;
 
-	while (buf != NULL)
+	next = (*lst)->next;
+	free(*lst);
+	*lst = next;
+}
+
+char	*gnl_find_newline(t_buffer_list *lst)
+{
+	ssize_t	i;
+
+	i = lst->start;
+	while (i < lst->size)
 	{
-		next = buf->next;
-		free(buf);
-		buf = next;
+		if (lst->buf[i] == '\n')
+			return (&lst->buf[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*gnl_lst_clear(t_buffer_list *lst)
+{
+	t_buffer_list	*next;
+
+	while (lst != NULL)
+	{
+		next = lst->next;
+		free(lst);
+		lst = next;
 	}
 	return (NULL);
 }

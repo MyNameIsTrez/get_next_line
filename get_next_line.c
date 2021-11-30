@@ -6,35 +6,34 @@
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/18 17:35:17 by sbos          #+#    #+#                 */
-/*   Updated: 2021/11/29 18:12:36 by sbos          ########   odam.nl         */
+/*   Updated: 2021/11/30 14:44:49 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 #include <unistd.h> // read
-// #include <sys/types.h> // ssize_t
 #include <stdlib.h> // malloc
 
-static char	*gnl_create_line_str(t_buffer_list *buf)
+static char	*gnl_create_line_str(t_buffer_list *lst)
 {
 	size_t	len;
 	char	*line;
 	char	*nl;
 
-	if (buf->size == 0)
+	if (lst->size == 0)
 		return (NULL);
 	len = 0;
-	while (buf->next != NULL)
+	while (lst->next != NULL)
 	{
-		len += (size_t)(buf->size - buf->start);
-		buf = buf->next;
+		len += (size_t)(lst->size - lst->start);
+		lst = lst->next;
 	}
-	nl = gnl_find_newline(buf);
+	nl = gnl_find_newline(lst);
 	if (nl == NULL)
-		len += (size_t)buf->size;
+		len += (size_t)lst->size;
 	else
-		len += (size_t)(nl - buf->str) + 1;
+		len += (size_t)(nl - lst->buf) + 1;
 	line = malloc(len + 1);
 	if (line == NULL)
 		return (NULL);
@@ -44,56 +43,56 @@ static char	*gnl_create_line_str(t_buffer_list *buf)
 	return (line);
 }
 
-// if (j != (*buf)->size && j + 1 < (*buf)->size)
-static char	*gnl_join_all(t_buffer_list **buf)
+// if (j != (*lst)->size && j + 1 < (*lst)->size)
+static char	*gnl_join_buffers(t_buffer_list **lst)
 {
 	char			*line;
 	ssize_t			i;
 	ssize_t			j;
 
-	line = gnl_create_line_str(*buf);
+	line = gnl_create_line_str(*lst);
 	if (line == NULL)
 		return (NULL);
 	i = 0;
-	while (*buf != NULL)
+	while (*lst != NULL)
 	{
-		j = (*buf)->start;
-		while (j < (*buf)->size && (*buf)->str[j] != '\n')
+		j = (*lst)->start;
+		while (j < (*lst)->size && (*lst)->buf[j] != '\n')
 		{
-			line[i] = (*buf)->str[j];
+			line[i] = (*lst)->buf[j];
 			i++;
 			j++;
 		}
-		if (j + 1 < (*buf)->size)
+		if (j + 1 < (*lst)->size)
 		{
-			(*buf)->start = j + 1;
+			(*lst)->start = j + 1;
 			return (line);
 		}
-		gnl_next(buf);
+		gnl_next(lst);
 	}
 	return (line);
 }
 
 /**
- * @brief Get the next line, including the newline character at the end.
- * @param fd
- * @return
+ * @brief Gets the next line from @p fd, including the newline.
+ * @param fd The file descriptor to read from.
+ * @return The next line from @p fd.
  */
 char	*get_next_line(int fd)
 {
-	static t_buffer_list	*buf = NULL;
+	static t_buffer_list	*lst = NULL;
 	t_buffer_list			*cur;
 
-	cur = gnl_lst_new_back(&buf);
+	cur = gnl_lst_new_back(&lst);
 	if (cur == NULL)
-		return (gnl_lst_clear(buf));
-	cur->size = read(fd, cur->str, BUFFER_SIZE);
+		return (gnl_lst_clear(lst));
+	cur->size = read(fd, cur->buf, BUFFER_SIZE);
 	while (gnl_find_newline(cur) == NULL && cur->size != 0)
 	{
-		cur = gnl_lst_new_back(&buf);
+		cur = gnl_lst_new_back(&lst);
 		if (cur == NULL)
-			return (gnl_lst_clear(buf));
-		cur->size = read(fd, cur->str, BUFFER_SIZE);
+			return (gnl_lst_clear(lst));
+		cur->size = read(fd, cur->buf, BUFFER_SIZE);
 	}
-	return (gnl_join_all(&buf));
+	return (gnl_join_buffers(&lst));
 }
