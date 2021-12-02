@@ -6,7 +6,7 @@
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/18 17:35:17 by sbos          #+#    #+#                 */
-/*   Updated: 2021/11/30 14:46:53 by sbos          ########   odam.nl         */
+/*   Updated: 2021/12/02 16:12:52 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*gnl_malloc_line(t_buffer_list *lst)
 	if (nl == NULL)
 		len += (size_t)lst->size;
 	else
-		len += (size_t)(nl - lst->buf) + 1;
+		len += (size_t)(nl - (lst->buf + lst->start)) + 1;
 	line = malloc(len + 1);
 	if (line == NULL)
 		return (NULL);
@@ -44,6 +44,7 @@ static char	*gnl_malloc_line(t_buffer_list *lst)
 }
 
 // if (j != (*lst)->size && j + 1 < (*lst)->size)
+// if (j < (*lst)->size && j + 1 < (*lst)->size)
 static char	*gnl_create_line(t_buffer_list **lst)
 {
 	char			*line;
@@ -52,7 +53,7 @@ static char	*gnl_create_line(t_buffer_list **lst)
 
 	line = gnl_malloc_line(*lst);
 	if (line == NULL)
-		return (NULL);
+		return (gnl_lst_clear(lst));
 	i = 0;
 	while (*lst != NULL)
 	{
