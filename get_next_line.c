@@ -44,7 +44,7 @@ static char	*gnl_malloc_line(t_buffer_list *lst)
 }
 
 // if (j != (*lst)->size && j + 1 < (*lst)->size)
-static char	*gnl_join_buffers(t_buffer_list **lst)
+static char	*gnl_create_line(t_buffer_list **lst)
 {
 	char			*line;
 	ssize_t			i;
@@ -80,19 +80,27 @@ static char	*gnl_join_buffers(t_buffer_list **lst)
  */
 char	*get_next_line(int fd)
 {
-	static t_buffer_list	*lst = NULL;
+	static t_buffer_list	*lst_fds[OPEN_MAX];
+	t_buffer_list			**lst;
 	t_buffer_list			*cur;
 
-	cur = gnl_lst_new_back(&lst);
+	if (fd < 0 || fd >= OPEN_MAX || BUFFER_SIZE < 1)
+		return (NULL);
+	lst = &lst_fds[fd];
+	if (gnl_find_newline(*lst))
+		return (gnl_create_line(lst));
+	cur = gnl_lst_new_back(lst);
 	if (cur == NULL)
-		return (gnl_lst_clear(lst));
+		return (NULL);
 	cur->size = read(fd, cur->buf, BUFFER_SIZE);
-	while (gnl_find_newline(cur) == NULL && cur->size != 0)
+	while (gnl_find_newline(cur) == NULL && cur->size > 0)
 	{
-		cur = gnl_lst_new_back(&lst);
+		cur = gnl_lst_new_back(lst);
 		if (cur == NULL)
 			return (gnl_lst_clear(lst));
 		cur->size = read(fd, cur->buf, BUFFER_SIZE);
 	}
-	return (gnl_join_buffers(&lst));
+	if (cur->size < 0)
+		return (gnl_lst_clear(lst));
+	return (gnl_create_line(lst));
 }
