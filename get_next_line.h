@@ -6,7 +6,7 @@
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/18 17:35:33 by sbos          #+#    #+#                 */
-/*   Updated: 2021/11/30 14:44:49 by sbos          ########   odam.nl         */
+/*   Updated: 2021/12/02 16:05:30 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,14 @@
 
 # include <stddef.h> // size_t
 # include <sys/types.h> // ssize_t
+# include <limits.h> // OPEN_MAX
+
+# ifndef OPEN_MAX
+#  define OPEN_MAX FD_SETSIZE
+# endif
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 8
+#  define BUFFER_SIZE 42
 # endif
 
 typedef struct s_buffer_list {
