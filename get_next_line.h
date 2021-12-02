@@ -30,7 +30,7 @@ typedef struct s_buffer_list {
 t_buffer_list	*gnl_lst_new_back(t_buffer_list **lst);
 void			gnl_next(t_buffer_list **lst);
 char			*gnl_find_newline(t_buffer_list *lst);
-char			*gnl_lst_clear(t_buffer_list *lst);
+char			*gnl_lst_clear(t_buffer_list **lst);
 
 char			*get_next_line(int fd);
 

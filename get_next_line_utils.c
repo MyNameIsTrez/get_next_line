@@ -6,7 +6,7 @@
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/18 17:35:20 by sbos          #+#    #+#                 */
-/*   Updated: 2021/11/30 14:56:39 by sbos          ########   odam.nl         */
+/*   Updated: 2021/12/02 15:54:03 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ char	*gnl_find_newline(t_buffer_list *lst)
 {
 	ssize_t	i;
 
+	if (lst == NULL)
+		return (NULL);
 	i = lst->start;
 	while (i < lst->size)
 	{
@@ -67,15 +69,9 @@ char	*gnl_find_newline(t_buffer_list *lst)
 	return (NULL);
 }
 
-char	*gnl_lst_clear(t_buffer_list *lst)
+char	*gnl_lst_clear(t_buffer_list **lst)
 {
-	t_buffer_list	*next;
-
-	while (lst != NULL)
-	{
-		next = lst->next;
-		free(lst);
-		lst = next;
-	}
+	while (*lst != NULL)
+		gnl_next(lst);
 	return (NULL);
 }
