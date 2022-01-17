@@ -11,7 +11,6 @@ int main(void) {
 	RUN_TEST(get_next_line, basic_no_newline);
 	RUN_TEST(get_next_line, basic_no_newline_end);
 	RUN_TEST(get_next_line, basic_with_newline_end);
-	RUN_TEST(get_next_line, empty_file);
 	RUN_TEST(get_next_line, one_newline);
 	RUN_TEST(get_next_line, two_newlines);
 	RUN_TEST(get_next_line, basic_with_newline);
@@ -54,17 +53,6 @@ Test(get_next_line, basic_with_newline_end)
 	// lseek(fd, 0, SEEK_SET);
 	cr_assert_str_eq(get_next_line(fd), "foobar\n");
 	cr_assert_str_eq(get_next_line(fd), "bazbee\n");
-	cr_assert_null(get_next_line(fd));
-	close(fd);
-}
-
-Test(get_next_line, empty_file)
-{
-	int fd = open("test_files/empty_file", O_RDONLY);
-	cr_assert_neq(fd, -1);
-	char b;
-	cr_assert_eq(read(fd, &b, 1), 0);
-	lseek(fd, 0, SEEK_SET);
 	cr_assert_null(get_next_line(fd));
 	close(fd);
 }
@@ -120,11 +108,9 @@ Test(get_next_line, stdin, .disabled = true)
 
 Test(get_next_line, real_empty)
 {
-	int fd = open("gnlTester/files/empty", O_RDONLY);
+	int fd = open("test_files/empty", O_RDONLY);
 	cr_assert_neq(fd, -1);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
+	cr_assert_null(get_next_line(fd));
 }
 
 Test(get_next_line, basic_with_newline)
