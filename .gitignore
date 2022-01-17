@@ -1,0 +1,34 @@
+# Ignore everything
+*
+
+# Allow folders
+!*/
+
+# Allow .c and .h files
+!*.[ch]
+
+# Allow the Makefile
+!Makefile
+
+# Allow tests and testers
+!*test*.c
+!*test*.h
+!testers
+
+# Allow Criterion files
+!crit_utils.h
+
+# Allow test files
+!test_files/*
+
+# Allow .gitignore
+!.gitignore
+
+# Allow README
+!README.md
+
+# Allow TODO
+!TODO.md
+
+# Allow .normignore
+!*.normignore

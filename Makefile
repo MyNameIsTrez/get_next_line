@@ -72,4 +72,7 @@ re: fclean all
 bonus:
 	@$(MAKE) ADD_BONUS=1 all
 
-.PHONY: all clean fclean re bonus
+test: all
+	./get_next_line
+
+.PHONY: all clean fclean re bonus test
