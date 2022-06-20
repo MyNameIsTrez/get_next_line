@@ -6,7 +6,7 @@
 #    By: sbos <sbos@student.codam.nl>                 +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/06/20 12:12:37 by sbos          #+#    #+#                  #
-#    Updated: 2022/06/20 14:09:26 by sbos          ########   odam.nl          #
+#    Updated: 2022/06/20 15:49:17 by sbos          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,8 +40,7 @@ FCLEANED_FILES := $(NAME)
 HEADERS +=\
 	$(addprefix $(HOME)/Documents/Programming/libctester/, $(shell $(MAKE) -C $(HOME)/Documents/Programming/libctester/ -f headers.mk get_headers))
 
-CFLAGS += -g3 -Wconversion -I$(HOME)/.brew/Cellar/criterion/2.3.3/include
-CFLAGS += -fsanitize=address
+CFLAGS += -g3 -Wconversion
 FCLEANED_FILES +=
 # endif
 
