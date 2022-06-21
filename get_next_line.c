@@ -6,7 +6,7 @@
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/18 17:35:17 by sbos          #+#    #+#                 */
-/*   Updated: 2021/12/02 16:12:52 by sbos          ########   odam.nl         */
+/*   Updated: 2022/06/21 16:15:44 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	*get_next_line(int fd)
 			return (gnl_lst_clear(lst));
 		cur->size = read(fd, cur->buf, BUFFER_SIZE);
 	}
-	if (cur->size < 0)
+	if (cur->size <= 0)
 		return (gnl_lst_clear(lst));
 	return (gnl_create_line(lst));
 }
