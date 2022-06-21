@@ -6,7 +6,7 @@
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/18 17:35:20 by sbos          #+#    #+#                 */
-/*   Updated: 2022/06/21 16:40:41 by sbos          ########   odam.nl         */
+/*   Updated: 2022/06/21 16:43:40 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	gnl_next(t_buffer_list **lst)
 	t_buffer_list	*next;
 
 	next = (*lst)->next;
-	ft_free(*lst);
+	free(*lst);
 	*lst = next;
 }
 
